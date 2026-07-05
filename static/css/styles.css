@@ -1,0 +1,794 @@
+/* ==========================================================
+   Task & Calc — Tema oscuro fijo con acento verde neón
+   ========================================================== */
+
+:root {
+  --bg: #0a0a0b;
+  --bg-soft: #131316;
+  --bg-card: #18181c;
+  --border: #26262c;
+  --text: #e8e8ea;
+  --text-muted: #8b8b93;
+  --accent: #39ff88;
+  --accent-dim: rgba(57, 255, 136, 0.12);
+  --warning: #ffc83c;
+  --warning-dim: rgba(255, 200, 60, 0.12);
+  --info: #4cc3ff;
+  --info-dim: rgba(76, 195, 255, 0.12);
+  --danger: #ff5566;
+  --danger-dim: rgba(255, 85, 102, 0.12);
+  --radius: 12px;
+  --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip; /* nunca scroll horizontal en móvil */
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Iconos Lucide (se renderizan como <svg>) */
+svg.lucide {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  vertical-align: middle;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.brand em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.brand-icon {
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.92rem;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--text);
+  background: var(--bg-card);
+}
+
+.nav-link.active {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.version-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  white-space: nowrap;
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+  flex: 1;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  text-decoration: none;
+  transition: filter 0.15s, background 0.15s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #061007;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.12);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  background: var(--bg-card);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #17060a;
+}
+
+.btn-danger:hover {
+  filter: brightness(1.12);
+}
+
+/* ==========================================================
+   Tablero Kanban
+   ========================================================== */
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.kanban-column {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem;
+  min-height: 220px;
+  min-width: 0; /* el contenido nunca estira la columna del grid */
+}
+
+.kanban-column-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.25rem 0.75rem;
+}
+
+.kanban-column-header h2 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex: 1;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.status-PENDING .status-dot { background: var(--warning); }
+.status-PENDING h2 { color: var(--warning); }
+.status-IN_PROGRESS .status-dot { background: var(--info); }
+.status-IN_PROGRESS h2 { color: var(--info); }
+.status-COMPLETED .status-dot { background: var(--accent); }
+.status-COMPLETED h2 { color: var(--accent); }
+
+.kanban-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+}
+
+.kanban-body {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-height: 60px;
+}
+
+.kanban-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 0.7rem;
+  transition: border-color 0.15s;
+}
+
+.kanban-card:hover {
+  border-color: var(--accent);
+}
+
+/* La primera tarjeta de cada columna = mayor prioridad */
+.kanban-card:first-child {
+  border-left: 3px solid var(--accent);
+}
+
+.kanban-card.is-dragging {
+  display: none;
+}
+
+.drag-handle {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: grab;
+  padding: 0.2rem 0.1rem;
+  touch-action: none; /* permite arrastrar con el dedo sin hacer scroll */
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.drag-handle svg.lucide {
+  width: 16px;
+  height: 16px;
+}
+
+/* Fantasma que sigue al puntero durante el arrastre */
+.kanban-ghost {
+  position: fixed;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.92;
+  transform: rotate(2deg);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  list-style: none;
+}
+
+/* Hueco donde caerá la tarjeta */
+.kanban-placeholder {
+  border: 2px dashed var(--accent);
+  border-radius: 10px;
+  background: var(--accent-dim);
+  list-style: none;
+}
+
+.task-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  overflow-wrap: break-word;
+}
+
+.task-desc {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  margin-top: 0.3rem;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+}
+
+.task-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.icon-btn {
+  display: inline-flex;
+  padding: 0.35rem;
+  border-radius: 8px;
+  color: var(--text-muted);
+  transition: color 0.15s, background 0.15s;
+}
+
+.icon-btn:hover {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.icon-btn-danger:hover {
+  color: var(--danger);
+  background: var(--danger-dim);
+}
+
+.icon-btn svg.lucide {
+  width: 15px;
+  height: 15px;
+}
+
+/* ---------- Formularios ---------- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+/* Formularios centrados (nueva/editar tarea) */
+.form-card {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.page-header-center {
+  justify-content: center;
+  text-align: center;
+}
+
+.field {
+  margin-bottom: 1.1rem;
+}
+
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.input {
+  width: 100%;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.95rem;
+  font-family: var(--font);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+textarea.input {
+  resize: vertical;
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: 0.82rem;
+  margin-top: 0.35rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+
+.form-actions.center {
+  justify-content: center;
+}
+
+/* ---------- Confirmación de borrado ---------- */
+.danger-card {
+  max-width: 440px;
+  margin: 3rem auto 0;
+  text-align: center;
+}
+
+.danger-icon svg.lucide {
+  width: 40px;
+  height: 40px;
+  color: var(--danger);
+  margin-bottom: 0.75rem;
+}
+
+.danger-card .subtitle {
+  margin: 0.6rem 0 0.5rem;
+}
+
+/* ==========================================================
+   Calculadora (dispositivo)
+   ========================================================== */
+.calc-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+/* Sin esto, la tabla (nowrap) estira la columna del grid y desborda en móvil */
+.calc-layout > * {
+  min-width: 0;
+}
+
+@media (min-width: 820px) {
+  .calc-layout {
+    grid-template-columns: 360px 1fr;
+    align-items: start;
+  }
+}
+
+.calc-device {
+  background: linear-gradient(180deg, #1c1c21, #121215);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Pantalla tipo LCD */
+.calc-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  background: #060d08;
+  border: 1px solid #123c22;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.1rem;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.calc-screen-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(57, 255, 136, 0.55);
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.calc-screen-value {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(57, 255, 136, 0.45);
+  overflow-wrap: anywhere;
+}
+
+/* Teclas */
+.calc-keys {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+}
+
+.btn-key {
+  border: none;
+  border-radius: 10px;
+  padding: 0.85rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: Consolas, "Courier New", monospace;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.05s;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.45);
+}
+
+.btn-key:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.key-clear {
+  background: #2a2a31;
+  color: var(--danger);
+}
+
+.key-equals {
+  background: var(--accent);
+  color: #061007;
+}
+
+.btn-key:hover {
+  filter: brightness(1.1);
+}
+
+.formula-note {
+  margin-top: 1.1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.formula-note code {
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 0.15rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+}
+
+/* ---------- Tabla de resultados ---------- */
+.result-card h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.35rem;
+}
+
+/* Vista previa de ejemplo (antes de calcular) */
+.preview-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.preview-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--warning);
+  background: var(--warning-dim);
+  border: 1px solid var(--warning);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  margin-bottom: 0.35rem;
+}
+
+.result-card.is-preview .table-wrap {
+  opacity: 0.45;
+  filter: saturate(0.6);
+}
+
+.preview-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  font-size: 0.88rem;
+  color: var(--accent);
+}
+
+.preview-hint strong {
+  background: var(--accent-dim);
+  border-radius: 6px;
+  padding: 0.05rem 0.5rem;
+}
+
+@media (max-width: 819px) {
+  /* En móvil el formulario queda arriba, no a la izquierda */
+  .preview-hint svg.lucide {
+    transform: rotate(90deg);
+  }
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.table th {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table tbody tr:hover {
+  background: var(--bg-soft);
+}
+
+/* ---------- Mensajes flash ---------- */
+.messages {
+  margin-bottom: 1.25rem;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.message-error {
+  background: var(--danger-dim);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 1.1rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* ==========================================================
+   Responsive (teléfono)
+   ========================================================== */
+@media (max-width: 860px) {
+  .kanban {
+    grid-template-columns: 1fr;
+  }
+
+  .kanban-column {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .container {
+    padding: 1.25rem 0.9rem;
+  }
+
+  /* Navbar en dos filas: marca + versión arriba, enlaces abajo */
+  .navbar-inner {
+    padding: 0.7rem 0.9rem;
+    gap: 0.6rem;
+  }
+
+  .brand {
+    order: 1;
+  }
+
+  .version-badge {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .nav-links {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .nav-link {
+    flex: 1;
+    justify-content: center;
+    padding: 0.5rem 0.65rem;
+    font-size: 0.9rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+
+  .nav-link.active {
+    border-color: var(--accent);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-header .btn {
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  /* 16px evita que iOS haga zoom al enfocar un campo */
+  .input {
+    font-size: 1rem;
+  }
+
+  .calc-device {
+    padding: 1rem;
+  }
+
+  .calc-screen-value {
+    font-size: 1.6rem;
+  }
+
+  .card {
+    padding: 1.1rem;
+  }
+
+  .table {
+    font-size: 0.82rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.55rem;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    justify-content: center;
+  }
+}

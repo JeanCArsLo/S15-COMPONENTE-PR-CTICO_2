@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Eliminar tarea · Task & Calc{% endblock %}
+
+{% block content %}
+<div class="card form-card danger-card">
+  <div class="danger-icon">
+    <i data-lucide="alert-triangle"></i>
+  </div>
+  <h1>¿Eliminar esta tarea?</h1>
+  <p class="subtitle">
+    "<strong>{{ task.title }}</strong>" se eliminará de forma permanente.
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-actions center">
+      <a href="{% url 'tasks:board' %}" class="btn btn-ghost">Cancelar</a>
+      <button type="submit" class="btn btn-danger">
+        <i data-lucide="trash-2"></i>
+        Sí, eliminar
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

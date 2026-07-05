@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load l10n %}
+
+{% block title %}Calculadora Técnica · Task & Calc{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Calculadora Técnica</h1>
+    <p class="subtitle">Depreciación por el método de Línea Recta</p>
+  </div>
+</div>
+
+<div class="calc-layout">
+  <!-- Dispositivo tipo calculadora -->
+  <div class="calc-device">
+    <div class="calc-screen">
+      <span class="calc-screen-label">DEPRECIACIÓN ANUAL · S/.</span>
+      <span class="calc-screen-value">
+        {% if result %}{{ result.annual|unlocalize }}{% else %}0.00{% endif %}
+      </span>
+    </div>
+
+    <form method="post" novalidate id="calc-form">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          <p class="field-error">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+
+      {% for field in form %}
+        <div class="field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% for error in field.errors %}
+            <p class="field-error">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      <div class="calc-keys">
+        <button type="button" class="btn-key key-clear" id="calc-clear" title="Limpiar">C</button>
+        <button type="submit" class="btn-key key-equals" title="Calcular">=</button>
+      </div>
+    </form>
+
+    <p class="formula-note">
+      <code>(Valor Inicial − Salvamento) / Vida Útil</code>
+    </p>
+  </div>
+
+  {% if result %}
+  <div class="card result-card">
+    <h2>Tabla de depreciación</h2>
+    <p class="subtitle">Base depreciable: S/. {{ result.depreciable_base|unlocalize }}</p>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Año</th>
+            <th>Depreciación</th>
+            <th>Acumulada</th>
+            <th>Valor en libros</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in result.schedule %}
+          <tr>
+            <td>{{ row.year }}</td>
+            <td>S/. {{ row.depreciation|unlocalize }}</td>
+            <td>S/. {{ row.accumulated|unlocalize }}</td>
+            <td>S/. {{ row.book_value|unlocalize }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <!-- Vista previa de ejemplo mientras no hay cálculo -->
+  <div class="card result-card is-preview">
+    <div class="preview-header">
+      <h2>Tabla de depreciación</h2>
+      <span class="preview-badge">Ejemplo</span>
+    </div>
+    <p class="subtitle">
+      Así se verá tu resultado. Ejemplo: Valor Inicial S/. 10000,
+      Vida Útil 5 años, Salvamento S/. 1000 → depreciación anual S/. 1800.00
+    </p>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Año</th>
+            <th>Depreciación</th>
+            <th>Acumulada</th>
+            <th>Valor en libros</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>S/. 1800.00</td><td>S/. 1800.00</td><td>S/. 8200.00</td></tr>
+          <tr><td>2</td><td>S/. 1800.00</td><td>S/. 3600.00</td><td>S/. 6400.00</td></tr>
+          <tr><td>3</td><td>S/. 1800.00</td><td>S/. 5400.00</td><td>S/. 4600.00</td></tr>
+          <tr><td>4</td><td>S/. 1800.00</td><td>S/. 7200.00</td><td>S/. 2800.00</td></tr>
+          <tr><td>5</td><td>S/. 1800.00</td><td>S/. 9000.00</td><td>S/. 1000.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="preview-hint">
+      <i data-lucide="arrow-left"></i>
+      Ingresa tus valores y presiona <strong>=</strong> para ver tu tabla real
+    </p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Tablero · Task & Calc{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Tablero de Tareas</h1>
+    <p class="subtitle">Arrastra las tarjetas · la primera de cada columna es la más importante</p>
+  </div>
+  <a href="{% url 'tasks:create' %}" class="btn btn-primary">
+    <i data-lucide="plus"></i>
+    Nueva tarea
+  </a>
+</div>
+
+<div class="kanban" data-reorder-url="{% url 'tasks:reorder' %}" data-csrf="{{ csrf_token }}">
+  {% for column in columns %}
+  <section class="kanban-column" data-status="{{ column.key }}">
+    <header class="kanban-column-header status-{{ column.key }}">
+      <span class="status-dot"></span>
+      <h2>{{ column.label }}</h2>
+      <span class="kanban-count">{{ column.tasks|length }}</span>
+    </header>
+
+    <ul class="kanban-body">
+      {% for task in column.tasks %}
+      <li class="kanban-card" data-id="{{ task.pk }}">
+        <button type="button" class="drag-handle" title="Arrastrar">
+          <i data-lucide="grip-vertical"></i>
+        </button>
+        <div class="task-body">
+          <h3 class="task-title">{{ task.title }}</h3>
+          {% if task.description %}
+            <p class="task-desc">{{ task.description }}</p>
+          {% endif %}
+        </div>
+        <div class="task-actions">
+          <a href="{% url 'tasks:update' task.pk %}" class="icon-btn" title="Editar">
+            <i data-lucide="pencil"></i>
+          </a>
+          <a href="{% url 'tasks:delete' task.pk %}" class="icon-btn icon-btn-danger" title="Eliminar">
+            <i data-lucide="trash-2"></i>
+          </a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

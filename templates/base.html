@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Task & Calc{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="{% url 'tasks:board' %}" class="brand">
+        <i data-lucide="terminal" class="brand-icon"></i>
+        <span>Task <em>&amp;</em> Calc</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="{% url 'tasks:board' %}"
+           class="nav-link {% if request.resolver_match.namespace == 'tasks' %}active{% endif %}">
+          <i data-lucide="list-checks"></i>
+          Tareas
+        </a>
+
+        {% if FEATURE_CALCULATOR %}
+        <a href="{% url 'calculator:depreciation' %}"
+           class="nav-link {% if request.resolver_match.namespace == 'calculator' %}active{% endif %}">
+          <i data-lucide="calculator"></i>
+          Calculadora
+        </a>
+        {% endif %}
+      </nav>
+
+      <span class="version-badge">
+        {% if FEATURE_CALCULATOR %}v2 · Full{% else %}v1 · Tasks{% endif %}
+      </span>
+    </div>
+  </header>
+
+  <main class="container">
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message message-{{ message.tags }}">
+            <i data-lucide="check-circle-2"></i>
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>Task &amp; Calc — Proyecto DevOps · CI/CD &amp; Variabilidad</p>
+  </footer>
+
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
