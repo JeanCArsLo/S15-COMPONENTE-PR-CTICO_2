@@ -58,14 +58,11 @@ Variables de entorno requeridas:
 - `DATABASE_URL=postgresql://...` (cadena de conexión de Supabase)
 - `FEATURE_CALCULATOR=True|False` (según la versión a desplegar)
 
-Comandos del pipeline:
+Comandos en Render:
 
-```bash
-# Build
-pip install -r requirements.txt
-python manage.py collectstatic --noinput
-python manage.py migrate
+- **Build Command:** `./build.sh` (instala dependencias, collectstatic y migrate)
+- **Start Command:** `gunicorn taskcalc.wsgi:application`
+  (si se deja el comando por defecto `gunicorn app:app`, también funciona
+  gracias al alias `app.py`)
 
-# Start
-gunicorn taskcalc.wsgi
-```
+La versión de Python se fija con el archivo `.python-version` (3.13.5).
