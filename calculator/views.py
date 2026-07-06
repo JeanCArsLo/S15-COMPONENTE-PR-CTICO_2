@@ -26,20 +26,30 @@ def depreciation(request):
         life = form.cleaned_data["useful_life"]
         salvage = form.cleaned_data["salvage_value"]
 
-        annual = (initial - salvage) / Decimal(life)
-        annual = annual.quantize(Decimal("0.01"))
+        annual = ((initial - salvage) / Decimal(life)).quantize(Decimal("0.01"))
 
         # Tabla de depreciación año por año
         schedule = []
         book_value = initial
+        accumulated = Decimal("0.00")
+
         for year in range(1, life + 1):
-            book_value -= annual
+            # En el último año, ajustamos para que el valor en libros
+            # coincida exactamente con el valor de salvamento
+            if year == life:
+                year_depreciation = (book_value - salvage).quantize(Decimal("0.01"))
+            else:
+                year_depreciation = annual
+
+            book_value = (book_value - year_depreciation).quantize(Decimal("0.01"))
+            accumulated = (accumulated + year_depreciation).quantize(Decimal("0.01"))
+
             schedule.append(
                 {
                     "year": year,
-                    "depreciation": annual,
-                    "accumulated": (annual * year).quantize(Decimal("0.01")),
-                    "book_value": book_value.quantize(Decimal("0.01")),
+                    "depreciation": year_depreciation,
+                    "accumulated": accumulated,
+                    "book_value": book_value,
                 }
             )
 
