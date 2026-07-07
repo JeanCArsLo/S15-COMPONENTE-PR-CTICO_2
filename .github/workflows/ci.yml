@@ -9,6 +9,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      # Sin .env en el runner, DEBUG caería a False y SECURE_SSL_REDIRECT
+      # respondería 301 a todas las peticiones http del cliente de tests.
+      DEBUG: "True"
     steps:
       - name: Clonar el repositorio
         uses: actions/checkout@v4
@@ -24,6 +28,9 @@ jobs:
 
       - name: Chequeo de configuración de Django
         run: python manage.py check
+
+      - name: Recolectar archivos estáticos
+        run: python manage.py collectstatic --noinput
 
       - name: Verificar que no hay migraciones pendientes
         run: python manage.py makemigrations --check --dry-run
